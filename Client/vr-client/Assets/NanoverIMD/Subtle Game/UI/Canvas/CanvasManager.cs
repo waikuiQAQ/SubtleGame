@@ -20,7 +20,9 @@ namespace NanoverIMD.Subtle_Game.UI.Canvas
         Instructions,
         TrialsTraining,
         TrialsObserver,
-        TrialsObserverTraining
+        TrialsObserverTraining,
+        UnbindGluhut,
+        BindGluhut
     }
 
     /// <summary>
@@ -158,6 +160,8 @@ namespace NanoverIMD.Subtle_Game.UI.Canvas
                 SubtleGameManager.TaskTypeVal.Sandbox => CanvasType.Instructions,
                 SubtleGameManager.TaskTypeVal.TrialsObserverTraining => CanvasType.TrialsObserverTraining,
                 SubtleGameManager.TaskTypeVal.TrialsObserver => CanvasType.TrialsObserver,
+                SubtleGameManager.TaskTypeVal.UnbindGluhut => CanvasType.UnbindGluhut,
+                SubtleGameManager.TaskTypeVal.BindGluhut => CanvasType.BindGluhut,
                 _ => CurrentCanvasType
             };
         }

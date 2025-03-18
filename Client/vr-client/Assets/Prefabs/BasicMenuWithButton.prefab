@@ -238,7 +238,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5314959385700870160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,6 +606,18 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4561120562517851275, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5162063187655392278, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5162063187655392278, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6079880855687406234, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -696,6 +708,18 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4561120562517851275, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5162063187655392278, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5162063187655392278, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6079880855687406234, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -794,10 +818,22 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4561120562517851275, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 4962976514727565826, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5162063187655392278, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5162063187655392278, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6079880855687406234, guid: 55ca3296d5a6ad040894b4975b85bd18, type: 3}
       propertyPath: m_SortingLayer
       value: 0

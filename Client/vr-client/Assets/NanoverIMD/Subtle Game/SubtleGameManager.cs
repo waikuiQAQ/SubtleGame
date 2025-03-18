@@ -90,8 +90,9 @@ namespace NanoverImd.Subtle_Game
                 HeadsetType,
                 TrialNumber,
                 TrialDuration,
-                CurrentInteractionMode
-            }
+                CurrentInteractionMode,
+                BindStatus
+        }
             public enum TaskStatusVal
             {
                 None,
@@ -109,9 +110,11 @@ namespace NanoverImd.Subtle_Game
                 Sandbox,
                 TrialsTraining,
                 TrialsObserver,
-                TrialsObserverTraining
+                TrialsObserverTraining,
+                UnbindGluhut,
+                BindGluhut
             }
-
+            
             public enum Modality
             {
                 None,
@@ -168,7 +171,15 @@ namespace NanoverImd.Subtle_Game
                     // Set interaction potential and scaling
                     switch (value)
                     {
-                        case TaskTypeVal.Sandbox:
+                        case TaskTypeVal.UnbindGluhut:
+                            _userInteractionManager.InteractionType = "gaussian";
+                            _userInteractionManager.InteractionForceScale = 150f;
+                            break;
+                        case TaskTypeVal.BindGluhut:
+                            _userInteractionManager.InteractionType = "gaussian";
+                            _userInteractionManager.InteractionForceScale = 150f;
+                            break;
+                    case TaskTypeVal.Sandbox:
                             _userInteractionManager.InteractionType = "gaussian";
                             _userInteractionManager.InteractionForceScale = 150f;
                             break;
@@ -268,6 +279,13 @@ namespace NanoverImd.Subtle_Game
         private const float trialTimeLimit = 30f;
         private const float trialTrainingTimeLimit = 60f;
 
+        #endregion
+
+        #region Gluhut
+        public string BindStatus
+        {
+            set => WriteToSharedState(SharedStateKey.BindStatus, value);
+        }
         #endregion
 
         private SubtleGameManager()
@@ -412,7 +430,14 @@ namespace NanoverImd.Subtle_Game
                     case "trials-observer":
                         OrderOfTasks.Add(TaskTypeVal.TrialsObserver);
                         break;
-                    
+
+                    case "UnbindGluhut":
+                        OrderOfTasks.Add(TaskTypeVal.UnbindGluhut);
+                        break;
+                    case "BindGluhut":
+                        OrderOfTasks.Add(TaskTypeVal.BindGluhut);
+                        break;
+
                     default:
                         Debug.LogWarning("One of the tasks in the order of tasks in the shared state was not recognised.");
                         break;
@@ -440,11 +465,12 @@ namespace NanoverImd.Subtle_Game
             {
                 CurrentTaskNum++; // increment task number
             }
-            
+            Debug.Log("current CurrentTaskNum is" + CurrentTaskNum);
             // Check if all tasks have been completed
             if (CurrentTaskNum == NumberOfTasks)
             {
                 CurrentTaskType = TaskTypeVal.GameFinished; // game finished
+                Debug.Log("gameFinish");
                 return;
             }
             // Update current task, next task, and task status
@@ -670,6 +696,11 @@ namespace NanoverImd.Subtle_Game
                     {
                         PlayerPrefs.SetInt(NumberOfTrialRounds, intValue);
                     }
+                    break;
+                case "puppeteer.gluhut-energy":
+                    Debug.Log(val.ToString());
+                    //do something here 
+                    //call the haptic manager to change haptic
                     break;
             }
         }

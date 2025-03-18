@@ -56,7 +56,14 @@ namespace NanoverIMD.Subtle_Game.UI.Canvas
         /// Game object with the instructions on how to exit the simulation (sandbox mode).
         /// </summary>
         [SerializeField] private GameObject exitInstructions;
-
+        /// <summary>
+        /// Game object with the instructions on BindGluhut.
+        /// </summary>
+        [SerializeField] private GameObject taskBindGluhutInstructions;
+        /// <summary>
+        /// Game object with the instructions on unbindGluhut.
+        /// </summary>
+        [SerializeField] private GameObject taskUnbindGluhutInstructions;
         /// <summary>
         /// The user interaction manager.
         /// </summary>
@@ -185,7 +192,13 @@ namespace NanoverIMD.Subtle_Game.UI.Canvas
                     taskSandboxInstructions.SetActive(true);
                     exitInstructions.SetActive(true);
                     break;
-                
+                case SubtleGameManager.TaskTypeVal.BindGluhut:
+                    taskBindGluhutInstructions.SetActive(true);
+                    break;
+                case SubtleGameManager.TaskTypeVal.UnbindGluhut:
+                    taskUnbindGluhutInstructions.SetActive (true);
+                    break;  
+
                 default:
                     if (!TaskLists.TrialsTasks.Contains(_subtleGameManager.CurrentTaskType)) return;
                     taskTrialsInstructions.SetActive(true);

@@ -3,8 +3,6 @@ from standardised_values import *
 import random
 
 puppeteer_namespace = 'puppeteer.'
-
-
 def write_to_shared_state(client: NanoverImdClient, key: str, value):
     """ Writes a valid key-value pair to the shared state with the puppeteer client namespace. """
 

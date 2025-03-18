@@ -168,7 +168,9 @@ namespace NanoverImd.Interaction
                 // If particle is a hydrogen, ignore it
                 if (frame.ParticleElements[i] == _hydrogenElement)
                     continue;
-                
+                //If partcle is water in gluhut system, ignore it 
+                if (frame.ParticleResidues[i] > 2)
+                    continue;
                 var particlePosition = frame.ParticlePositions[i];
                 var sqrDistance = Vector3.SqrMagnitude(position - particlePosition);
 

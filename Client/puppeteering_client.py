@@ -3,6 +3,8 @@ from task_nanotube import NanotubeTask
 from task_knot_tying import KnotTyingTask
 from task_trials import InteractorTrialsTask, ObserverTrialsTask, InteractorTrialsTraining, ObserverTrialsTraining
 from task_sandbox import SandboxTask
+from task_UnbindGluhutTest import UnbindGluhutTask
+from task_BindGluhutTest import BindGluhutTask
 from additional_functions import write_to_shared_state, randomise_list_order
 from standardised_values import *
 import time
@@ -27,14 +29,16 @@ def generate_username_for_player():
             return username
 
 
-def get_order_of_tasks(run_short_game: bool):
+def get_order_of_tasks(run_short_game: bool, Gluhut:bool = False):
     """ Get an ordered list of tasks for the game. The game is in two sections and the first task of each section is
     always the nanotube task, then the knot-tying and trials task is randomised.
     @param: test_run If true then each section will only contain the nanotube task """
 
+    if Gluhut:
+        return [TASK_BINDGLUHUT,TASK_UNBINDGLUHUT]
     if run_short_game:
         return [TASK_NANOTUBE, TASK_NANOTUBE]
-
+    
     # Fix the order of the tasks
     tasks_without_training = [TASK_NANOTUBE, TASK_KNOT_TYING, TASK_TRIALS_INTERACTOR, TASK_NANOTUBE, TASK_KNOT_TYING, TASK_TRIALS_INTERACTOR]
 
@@ -77,9 +81,9 @@ class PuppeteeringClient:
         self.nanover_client.subscribe_multiplayer()
         self.nanover_client.subscribe_to_frames()
         self.nanover_client.update_available_commands()
-
         # Set order of tasks
-        self.order_of_tasks = get_order_of_tasks(run_short_game=short_game)
+        #self.order_of_tasks = get_order_of_tasks(run_short_game=short_game) #I change here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        self.order_of_tasks = get_order_of_tasks(run_short_game= True, Gluhut = True)
 
         # Set order of interaction modality
         if first_modality.lower() == 'random':
@@ -98,10 +102,11 @@ class PuppeteeringClient:
         self.nanotube_sim = None
         self.alanine_sim = None
         self.trials_sims = None
+        self.gluhut_sims = None
         self.num_of_trial_repeats = number_of_trial_repeats
         self.trials_sim_names = None
         self.first_practice_sim = True
-
+        
     def run_game(self):
 
         print('\nSTARTING GAME!')
@@ -114,7 +119,7 @@ class PuppeteeringClient:
         for task in self.order_of_tasks:
 
             simulation_counter = self.nanover_client.current_frame.values["system.simulation.counter"]
-
+            
             print('\n- Current task: ' + task)
             
             if task == TASK_NANOTUBE:
@@ -152,7 +157,12 @@ class PuppeteeringClient:
                 current_task = ObserverTrialsTraining(client=self.nanover_client, simulations=self.trials_sims,
                                                       simulation_counter=simulation_counter,
                                                       number_of_repeats=self.num_of_trial_repeats)
-
+            elif task == TASK_UNBINDGLUHUT:
+                current_task = UnbindGluhutTask(client=self.nanover_client, simulations=self.gluhut_sims,
+                                                      simulation_counter=simulation_counter,userName = self.username)
+            elif task == TASK_BINDGLUHUT:
+                current_task = BindGluhutTask(client=self.nanover_client, simulations=self.gluhut_sims,
+                                                      simulation_counter=simulation_counter,userName = self.username)
             else:
                 print("Current task not recognised, closing the puppeteering client.")
                 break
@@ -169,10 +179,11 @@ class PuppeteeringClient:
 
         # Get simulation indices for loading onto the server
         self.sandbox_sim = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_SANDBOX)
-        self.nanotube_sim = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_NANOTUBE)
-        self.alanine_sim = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_KNOT_TYING)
-        self.trials_sims = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_TRIALS)
-
+        #self.nanotube_sim = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_NANOTUBE)
+        #self.alanine_sim = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_KNOT_TYING)
+        #self.trials_sims = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_TRIALS)
+        self.gluhut_sims = self.get_name_and_server_index_of_simulations_for_task(SIM_NAME_GLUHUT)
+        print(self.gluhut_sims)
         # update the shared state
         write_to_shared_state(client=self.nanover_client, key=KEY_USERNAME, value=self.username)
         write_to_shared_state(client=self.nanover_client, key=KEY_GAME_STATUS, value=WAITING)
@@ -201,7 +212,7 @@ class PuppeteeringClient:
                     continue
                 elif value in [PLAYER_NANOTUBE, PLAYER_KNOT_TYING,
                                PLAYER_TRIALS, PLAYER_TRIALS_TRAINING,
-                               PLAYER_TRIALS_OBSERVER, PLAYER_TRIALS_OBSERVER_TRAINING]:
+                               PLAYER_TRIALS_OBSERVER, PLAYER_TRIALS_OBSERVER_TRAINING,PLAYER_UNBINDGLUHUT,PlAYER_BINDGLUHUT]:
                     break
 
             except KeyError:

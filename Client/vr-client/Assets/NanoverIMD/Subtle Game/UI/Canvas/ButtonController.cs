@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Threading.Tasks;
 using NanoverIMD.Subtle_Game.UI.Canvas;
+using Oculus.Interaction;
 using UnityEngine;
 
 namespace NanoverImd.Subtle_Game.Canvas
@@ -16,9 +18,10 @@ namespace NanoverImd.Subtle_Game.Canvas
         
         private CanvasManager _canvasManager;
         private SubtleGameManager _subtleGameManager;
-        
+            
         private const float TimeDelay = 0.15f;
 
+        private Oculus.Interaction.InteractableUnityEventWrapper _eventWrapper;
         // <summary>
         // A link to the PokeInteractable component to control the button state enable/disable it
         // <summary>
@@ -28,7 +31,7 @@ namespace NanoverImd.Subtle_Game.Canvas
         {
             _canvasManager = FindObjectOfType<CanvasManager>();
             _subtleGameManager = FindObjectOfType<SubtleGameManager>();
-
+            _eventWrapper = GetComponent<InteractableUnityEventWrapper>();
             _buttonInteractable = this.gameObject.GetComponent<Oculus.Interaction.PokeInteractable>();
             if (_buttonInteractable == null) {
                 Debug.LogWarning("Call find its attached PokeInteractable component, state change wont work");
@@ -47,7 +50,7 @@ namespace NanoverImd.Subtle_Game.Canvas
                 Debug.LogWarning("You are trying to press the button with the wrong interaction mode.");   
                 return;
             }
-            
+            DisanbleBottonAndSetBack();
             // Prepare game
             Invoke(nameof(InvokePrepareGame), TimeDelay);
             
@@ -89,7 +92,8 @@ namespace NanoverImd.Subtle_Game.Canvas
                 Debug.LogWarning("You are trying to press the button with the wrong interaction mode.");   
                 return;
             }
-
+            DisanbleBottonAndSetBack();
+            Debug.Log("user click Lets go Button");
             // Invoke the button press
             Invoke(nameof(InvokeStartTask), TimeDelay);
         }
@@ -101,7 +105,28 @@ namespace NanoverImd.Subtle_Game.Canvas
         {
             _subtleGameManager.StartTask();
         }
-        
+        /// <summary>
+        /// Attach to the button for complete unbind or bind.
+        /// </summary>
+        public void ButtonFinishedUnbind()
+        {
+            if (!CanButtonBePressed())
+            {
+                Debug.LogWarning("You are trying to press the button with the wrong interaction mode.");
+                return;
+            }
+            DisanbleBottonAndSetBack();
+            Debug.Log("finished unbind or bind");
+            
+            Invoke(nameof(InvokeFinishedUnbind), TimeDelay);
+
+        }
+
+        private void InvokeFinishedUnbind()
+        {
+            _subtleGameManager.BindStatus = "unbind-finished";
+        }
+
         /// <summary>
         /// Attach to the button for finishing the trial early.
         /// </summary>
@@ -187,7 +212,7 @@ namespace NanoverImd.Subtle_Game.Canvas
                 Debug.LogWarning("You are trying to press the button with the wrong interaction mode.");   
                 return;
             }
-            
+            Debug.Log("user click Start Button");
             // Invoke button press
             Invoke(nameof(InvokeSwitchTask), TimeDelay);
         }
@@ -245,6 +270,28 @@ namespace NanoverImd.Subtle_Game.Canvas
         {
             _canvasManager.RequestPreviousMenu();
         }
+
+        /// <summary>
+        /// function of disable botton and set it back after a few seconds
+        /// </summary>
+
+        private void DisanbleBottonAndSetBack()
+        {
+            _eventWrapper.enabled = false;
+            Debug.Log("trigger botton");
+            StartCoroutine(EnableButtonAfterSeconds(1f));
+        }
+
+        /// <summary>
+        /// IEnumerator for enable button for few seconds 
+        /// </summary>
+        private IEnumerator EnableButtonAfterSeconds(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            
+            _eventWrapper.enabled = true;
+        }
+
 
         /// <summary>
         /// Checks whether the button can be pressed. If the interaction mode is set in the Puppeteer Manager, then

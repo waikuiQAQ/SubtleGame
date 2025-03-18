@@ -149,6 +149,7 @@ class Task:
 
         # Wait for player to register that the task has finished
         print('Waiting for VR client to confirm end of task...')
+        print(self.client.latest_multiplayer_values[KEY_PLAYER_TASK_STATUS])
         self._wait_for_key_values(KEY_PLAYER_TASK_STATUS, PLAYER_FINISHED)
 
     def _change_simulation_colour_when_task_finishes(self):
